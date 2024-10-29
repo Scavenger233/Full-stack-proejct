@@ -27,7 +27,7 @@ public class CourseController {
 	@Autowired
 	private CourseService courseService;
 
-	@GetMapping("/library/{username}/courses")
+	@GetMapping("/instructors/{username}/courses")
 	public List<Course> getAllCourses(@PathVariable String username) {
 		
 		List<Course> courses = courseService.getAllCourses(username);
@@ -35,14 +35,14 @@ public class CourseController {
 		return courses;
 	}
 
-	@GetMapping("/library/{username}/courses/{id}")
+	@GetMapping("/instructors/{username}/courses/{id}")
 	public Course getCourse(@PathVariable String username, @PathVariable long id) {
 		
 		Course course = courseService.getCourse(username, id);
 		return course;
 	}
 
-	@DeleteMapping("/library/{username}/courses/{id}")
+	@DeleteMapping("/instructors/{username}/courses/{id}")
 	public ResponseEntity<Void> deleteCourse(@PathVariable String username, @PathVariable long id) {
 
 		courseService.deleteCourse(username, id);
@@ -51,7 +51,7 @@ public class CourseController {
 		return responseEntity;
 	}
 
-	@PutMapping("/library/{username}/courses/{id}")
+	@PutMapping("/instructors/{username}/courses/{id}")
 	public ResponseEntity<Course> updateCourse(@PathVariable String username, @PathVariable long id,
 			@RequestBody Course course) {
 
@@ -64,7 +64,7 @@ public class CourseController {
 		return responseEntity;
 	}
 
-	@PostMapping("/library/{username}/courses")
+	@PostMapping("/instructors/{username}/courses")
 	public ResponseEntity<Void> createCourse(@PathVariable String username, @RequestBody Course course) {
 		
 		course.setUsername(username);

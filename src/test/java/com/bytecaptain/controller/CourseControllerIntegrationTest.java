@@ -42,33 +42,33 @@ public class CourseControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     @Order(1)
-    public void addcourse() {
+    public void addCourse() {
 
     	Course course = new Course(10001, "JavaCourses", "An in-depth guide to Spring Boot development.");
 
         HttpEntity<Course> entity = new HttpEntity<>(course, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaCourses/courses"),
+                createURLWithPort("/api/instructors/JavaCourses/courses"),
                 HttpMethod.POST, entity, String.class);
 
         String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode().value());
-        assertTrue(actual.contains("/library/JavaCourses/courses"));
+        assertTrue(actual.contains("/instructors/JavaCourses/courses"));
 
     }
     
     @Test
     @Order(2)
-    public void updatecourse() throws JSONException {
+    public void updateCourse() throws JSONException {
 
     	Course course = new Course(1, "JavaCourses", "An in-depth guide to Spring Boot development. updated");
 
         HttpEntity<Course> entity = new HttpEntity<>(course, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaCourses/courses/1"),
+                createURLWithPort("/api/instructors/JavaCourses/courses/1"),
                 HttpMethod.PUT, entity, String.class);
         
         assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
@@ -86,7 +86,7 @@ public class CourseControllerIntegrationTest extends BaseIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(null, getHttpHeader());
 
         ResponseEntity<String> response1 = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaCourses/courses/1"),
+                createURLWithPort("/api/instructors/JavaCourses/courses/1"),
                 HttpMethod.GET, entity, String.class);
 
         String expected = "{\"id\":1,\"username\":\"JavaCourses\",\"description\":\"An in-depth guide to Spring Boot development. updated\"}";
@@ -98,19 +98,19 @@ public class CourseControllerIntegrationTest extends BaseIntegrationTest {
 	@Test
 	@Order(4)
 	public void testDeleteCourse() {
-		Course course = restTemplate.getForObject(createURLWithPort("/api/library/JavaCourses/courses/1"), Course.class);
+		Course course = restTemplate.getForObject(createURLWithPort("/api/instructors/JavaCourses/courses/1"), Course.class);
 		assertNotNull(course);
 
 		HttpEntity<String> entity = new HttpEntity<>(null, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaCourses/courses/1"),
+                createURLWithPort("/api/instructors/JavaCourses/courses/1"),
                 HttpMethod.DELETE, entity, String.class);
 		
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode().value());
 
 		try {
-			course = restTemplate.getForObject("/api/library/JavaCourses/courses/1", Course.class);
+			course = restTemplate.getForObject("/api/instructors/JavaCourses/courses/1", Course.class);
 		} catch (CourseNotFoundException e) {
 			assertEquals("Course id not found : 1", e.getMessage());
 		}

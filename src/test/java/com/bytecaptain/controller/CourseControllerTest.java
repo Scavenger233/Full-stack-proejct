@@ -52,7 +52,7 @@ class CourseControllerTest {
         Mockito.when(courseService.getCourse("JavaCourses",10001)).thenReturn(mockCourse);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/library/JavaCourses/courses/10001").accept(
+                "/instructors/JavaCourses/courses/10001").accept(
                 MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -69,7 +69,7 @@ class CourseControllerTest {
         Mockito.when(courseService.createCourse(Mockito.anyString(), Mockito.any(Course.class))).thenReturn(course);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/library/JavaCourses/courses").content(exampleCourseJson)
+                .post("/instructors/JavaCourses/courses").content(exampleCourseJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -78,7 +78,7 @@ class CourseControllerTest {
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
 
-        assertEquals("http://localhost/library/JavaCourses/courses/10001",
+        assertEquals("http://localhost/instructors/JavaCourses/courses/10001",
                 response.getHeader(HttpHeaders.LOCATION));
 
     }
@@ -93,7 +93,7 @@ class CourseControllerTest {
         String courseString = om.writeValueAsString(course);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/library/JavaCourses/courses/10001")
+                .put("/instructors/JavaCourses/courses/10001")
                 .contentType(MediaType.APPLICATION_JSON).content(courseString);
         
 
@@ -113,7 +113,7 @@ class CourseControllerTest {
     	doNothing().when(courseService).deleteCourse("JavaCourses", Long.valueOf(10001));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/library/JavaCourses/courses/10001");
+                .delete("/instructors/JavaCourses/courses/10001");
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
