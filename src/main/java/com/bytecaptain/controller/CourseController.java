@@ -14,6 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.bytecaptain.model.Course;
 import com.bytecaptain.service.CourseService;
 
+//Port 3000 ro run React and Vue JS app
+//Port 4200 to run Angular apps
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
 public class CourseController {
