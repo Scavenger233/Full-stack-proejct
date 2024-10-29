@@ -1,4 +1,4 @@
-package com.library;
+package com.bytecaptain;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

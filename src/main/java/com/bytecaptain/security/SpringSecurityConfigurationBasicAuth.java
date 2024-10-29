@@ -1,4 +1,4 @@
-package com.library.security;
+package com.bytecaptain.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,14 +1,14 @@
-package com.library.controller;
+package com.bytecaptain.controller;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.library.BaseIntegrationTest;
-import com.library.SprintBootCrudApplication;
-import com.library.exception.BookNotFoundException;
-import com.library.model.Book;
+import com.bytecaptain.BaseIntegrationTest;
+import com.bytecaptain.SprintBootCrudApplication;
+import com.bytecaptain.exception.CourseNotFoundException;
+import com.bytecaptain.model.Course;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONException;
 import org.junit.jupiter.api.Order;
@@ -33,7 +33,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = SprintBootCrudApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(value = OrderAnnotation.class)
 @ActiveProfiles("test")
-public class BookControllerIntegrationTest extends BaseIntegrationTest {
+public class CourseControllerIntegrationTest extends BaseIntegrationTest {
     @LocalServerPort
     private int port;
 
@@ -42,38 +42,38 @@ public class BookControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     @Order(1)
-    public void addbook() {
+    public void addcourse() {
 
-    	Book book = new Book(10001, "JavaBooks", "An in-depth guide to Spring Boot development.");
+    	Course course = new Course(10001, "JavaCourses", "An in-depth guide to Spring Boot development.");
 
-        HttpEntity<Book> entity = new HttpEntity<>(book, getHttpHeader());
+        HttpEntity<Course> entity = new HttpEntity<>(course, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaBooks/books"),
+                createURLWithPort("/api/library/JavaCourses/courses"),
                 HttpMethod.POST, entity, String.class);
 
         String actual = response.getHeaders().get(HttpHeaders.LOCATION).get(0);
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatusCode().value());
-        assertTrue(actual.contains("/library/JavaBooks/books"));
+        assertTrue(actual.contains("/library/JavaCourses/courses"));
 
     }
     
     @Test
     @Order(2)
-    public void updatebook() throws JSONException {
+    public void updatecourse() throws JSONException {
 
-    	Book book = new Book(1, "JavaBooks", "An in-depth guide to Spring Boot development. updated");
+    	Course course = new Course(1, "JavaCourses", "An in-depth guide to Spring Boot development. updated");
 
-        HttpEntity<Book> entity = new HttpEntity<>(book, getHttpHeader());
+        HttpEntity<Course> entity = new HttpEntity<>(course, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaBooks/books/1"),
+                createURLWithPort("/api/library/JavaCourses/courses/1"),
                 HttpMethod.PUT, entity, String.class);
         
         assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
 
-        String expected = "{\"id\":1,\"username\":\"JavaBooks\",\"description\":\"An in-depth guide to Spring Boot development. updated\"}";
+        String expected = "{\"id\":1,\"username\":\"JavaCourses\",\"description\":\"An in-depth guide to Spring Boot development. updated\"}";
 
         JSONAssert.assertEquals(expected, response.getBody(), false);
 
@@ -81,15 +81,15 @@ public class BookControllerIntegrationTest extends BaseIntegrationTest {
     
     @Test
     @Order(3)
-    public void testGetBook() throws JSONException, JsonProcessingException {
+    public void testGetCourse() throws JSONException, JsonProcessingException {
 
         HttpEntity<String> entity = new HttpEntity<>(null, getHttpHeader());
 
         ResponseEntity<String> response1 = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaBooks/books/1"),
+                createURLWithPort("/api/library/JavaCourses/courses/1"),
                 HttpMethod.GET, entity, String.class);
 
-        String expected = "{\"id\":1,\"username\":\"JavaBooks\",\"description\":\"An in-depth guide to Spring Boot development. updated\"}";
+        String expected = "{\"id\":1,\"username\":\"JavaCourses\",\"description\":\"An in-depth guide to Spring Boot development. updated\"}";
 
         JSONAssert.assertEquals(expected, response1.getBody(), false);
         
@@ -97,22 +97,22 @@ public class BookControllerIntegrationTest extends BaseIntegrationTest {
     
 	@Test
 	@Order(4)
-	public void testDeleteBook() {
-		Book book = restTemplate.getForObject(createURLWithPort("/api/library/JavaBooks/books/1"), Book.class);
-		assertNotNull(book);
+	public void testDeleteCourse() {
+		Course course = restTemplate.getForObject(createURLWithPort("/api/library/JavaCourses/courses/1"), Course.class);
+		assertNotNull(course);
 
 		HttpEntity<String> entity = new HttpEntity<>(null, getHttpHeader());
 
         ResponseEntity<String> response = restTemplate.exchange(
-                createURLWithPort("/api/library/JavaBooks/books/1"),
+                createURLWithPort("/api/library/JavaCourses/courses/1"),
                 HttpMethod.DELETE, entity, String.class);
 		
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode().value());
 
 		try {
-			book = restTemplate.getForObject("/api/library/JavaBooks/books/1", Book.class);
-		} catch (BookNotFoundException e) {
-			assertEquals("Book id not found : 1", e.getMessage());
+			course = restTemplate.getForObject("/api/library/JavaCourses/courses/1", Course.class);
+		} catch (CourseNotFoundException e) {
+			assertEquals("Course id not found : 1", e.getMessage());
 		}
 	}
 

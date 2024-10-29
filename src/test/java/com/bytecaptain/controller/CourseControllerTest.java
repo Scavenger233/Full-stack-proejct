@@ -1,4 +1,4 @@
-package com.library.controller;
+package com.bytecaptain.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -23,53 +23,53 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.library.model.Book;
-import com.library.service.BookService;
+import com.bytecaptain.model.Course;
+import com.bytecaptain.service.CourseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(value = BookController.class)
+@WebMvcTest(value = CourseController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
-class BookControllerTest {
+class CourseControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private BookService bookService;
+    private CourseService courseService;
     
     private static final ObjectMapper om = new ObjectMapper();
 
     //TODO move to base class as sample data
-    Book mockBook = new Book(10001, "JavaBooks", "An in-depth guide to Spring Boot development.");
+    Course mockCourse = new Course(10001, "JavaCourses", "An in-depth guide to Spring Boot development.");
 
-    String exampleBookJson = "{\"id\":10001,\"username\":\"JavaBooks\",\"description\":\"An in-depth guide to Spring Boot development.\"}";
+    String exampleCourseJson = "{\"id\":10001,\"username\":\"JavaCourses\",\"description\":\"An in-depth guide to Spring Boot development.\"}";
 
     @Test
-    public void getBook() throws Exception {
+    public void getCourse() throws Exception {
 
-        Mockito.when(bookService.getBook("JavaBooks",10001)).thenReturn(mockBook);
+        Mockito.when(courseService.getCourse("JavaCourses",10001)).thenReturn(mockCourse);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/library/JavaBooks/books/10001").accept(
+                "/library/JavaCourses/courses/10001").accept(
                 MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-        JSONAssert.assertEquals(exampleBookJson, result.getResponse().getContentAsString(), false);
+        JSONAssert.assertEquals(exampleCourseJson, result.getResponse().getContentAsString(), false);
 
     }
 
     @Test
-    public void createBook() throws Exception {
+    public void createCourse() throws Exception {
 
-    	Book book = new Book(10001, "JavaBooks", "An in-depth guide to Spring Boot development.");
+    	Course course = new Course(10001, "JavaCourses", "An in-depth guide to Spring Boot development.");
 
-        Mockito.when(bookService.createBook(Mockito.anyString(), Mockito.any(Book.class))).thenReturn(book);
+        Mockito.when(courseService.createCourse(Mockito.anyString(), Mockito.any(Course.class))).thenReturn(course);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/library/JavaBooks/books").content(exampleBookJson)
+                .post("/library/JavaCourses/courses").content(exampleCourseJson)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -78,23 +78,23 @@ class BookControllerTest {
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
 
-        assertEquals("http://localhost/library/JavaBooks/books/10001",
+        assertEquals("http://localhost/library/JavaCourses/courses/10001",
                 response.getHeader(HttpHeaders.LOCATION));
 
     }
     
     @Test
-    public void updateBook() throws Exception {
+    public void updateCourse() throws Exception {
 
-    	Book book = new Book(10001, "JavaBooks", "An in-depth guide to Spring Boot development.");
+    	Course course = new Course(10001, "JavaCourses", "An in-depth guide to Spring Boot development.");
 
-        Mockito.when(bookService.updateBook(Mockito.anyString(), Mockito.anyLong(), Mockito.any(Book.class))).thenReturn(book);
+        Mockito.when(courseService.updateCourse(Mockito.anyString(), Mockito.anyLong(), Mockito.any(Course.class))).thenReturn(course);
         
-        String bookString = om.writeValueAsString(book);
+        String courseString = om.writeValueAsString(course);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/library/JavaBooks/books/10001")
-                .contentType(MediaType.APPLICATION_JSON).content(bookString);
+                .put("/library/JavaCourses/courses/10001")
+                .contentType(MediaType.APPLICATION_JSON).content(courseString);
         
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -103,17 +103,17 @@ class BookControllerTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
 
-        JSONAssert.assertEquals(exampleBookJson, result.getResponse().getContentAsString(), false);
+        JSONAssert.assertEquals(exampleCourseJson, result.getResponse().getContentAsString(), false);
 
     }
     
     @Test
-    public void deleteBook() throws Exception {
+    public void deleteCourse() throws Exception {
 
-    	doNothing().when(bookService).deleteBook("JavaBooks", Long.valueOf(10001));
+    	doNothing().when(courseService).deleteCourse("JavaCourses", Long.valueOf(10001));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/library/JavaBooks/books/10001");
+                .delete("/library/JavaCourses/courses/10001");
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 

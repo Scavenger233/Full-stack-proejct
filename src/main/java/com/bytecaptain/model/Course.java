@@ -1,4 +1,4 @@
-package com.library.model;
+package com.bytecaptain.model;
 
 import javax.persistence.Entity;
 
@@ -6,18 +6,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Book {
+public class Course {
 	@Id
 	@GeneratedValue
 	private Long id;
 	private String username;
 	private String description;
 
-	public Book() {
+	public Course() {
 
 	}
 
-	public Book(long id, String username, String description) {
+	public Course(long id, String username, String description) {
 		super();
 		this.id = id;
 		this.username = username;
